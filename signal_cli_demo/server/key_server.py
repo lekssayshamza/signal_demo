@@ -203,44 +203,40 @@ class KeyServer:
 
     def show_server_state(self):
         """
-        Display the current state of the key server.
+        Affiche l'état actuel du serveur de clés.
 
-        This educational function shows what public information
-        is stored on the server, demonstrating that the server
-        holds no confidential information.
+        Cette fonction éducative montre quelles informations publiques
+        sont stockées sur le serveur, démontrant que le serveur
+        ne détient aucune information confidentielle.
 
-        Security Note:
-            Everything displayed here is public information.
-            The server cannot compromise any conversations.
+        Note de sécurité :
+            Tout ce qui est affiché ici est une information publique.
+            Le serveur ne peut pas compromettre les conversations.
         """
-        print("\n" + "="*60)
-        print("SIGNAL KEY SERVER STATE (Educational View)")
-        print("="*60)
+        print("\n" + "="*50)
+        print("ÉTAT DU SERVEUR DE CLÉS SIGNAL")
+        print("="*50)
 
         if not self.users:
-            print("No users registered on the server")
-            print("Server is empty")
+            print("Aucun utilisateur enregistré sur le serveur")
+            print("Le serveur est vide")
         else:
-            print(f"Registered users: {len(self.users)}")
+            print(f"Utilisateurs enregistrés : {len(self.users)}")
 
             for user_id, user_data in self.users.items():
-                print(f"\nUser: {user_id}")
-                print(f"  Identity Key: {user_data['identity_key'].hex()[:32]}...")
-                print(f"  Signed Pre-Key: {user_data['signed_prekey'].hex()[:32]}...")
-
+                print(f"\nUtilisateur : {user_id}")
+                print("  Clé d'Identité (IK)       : PRÉSENTE")
+                print("  Clé Pré-Signée (SPK)      : PRÉSENTE")
                 if 'one_time_prekey' in user_data:
-                    print(f"  One-Time Pre-Key: {user_data['one_time_prekey'].hex()[:32]}...")
-                    print("  Status: One-Time Pre-Key available for X3DH")
+                    print("  Clé Pré-Usage Unique (OPK) : PRÉSENTE")
                 else:
-                    print("  One-Time Pre-Key: CONSUMED/DELETED")
-                    print("  Status: No one-time pre-key available")
-
-        print("\nSECURITY ANALYSIS:")
-        print("- Server stores ONLY public keys (no private keys)")
-        print("- Server cannot decrypt messages or compromise conversations")
-        print("- Server acts as trusted directory for key distribution")
-        print("- All stored data is safe to share publicly")
-        print("="*60 + "\n")
+                    print("  Clé Pré-Usage Unique (OPK) : SUPPRIMÉE")
+        print("\nANALYSE DE SÉCURITÉ :")
+        print("- Le serveur stocke UNIQUEMENT des clés publiques")
+        print("- Le serveur ne peut pas déchiffrer les messages")
+        print("- Le serveur agit comme annuaire de confiance")
+        print("- Toutes les données peuvent être partagées publiquement")
+        print("="*50 + "\n")
 
     def is_user_registered(self, user_id: str) -> bool:
         """
@@ -267,3 +263,4 @@ class KeyServer:
         if user_id not in self.users:
             return False
         return 'one_time_prekey' in self.users[user_id]
+

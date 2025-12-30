@@ -88,15 +88,15 @@ def display_menu():
     print("1) Initialiser Alice & Bob (génération des clés)")
     print("2) Enregistrer Bob sur le serveur de clés")
     print("3) Alice récupère les prekeys de Bob depuis le serveur")
-    print("4) Afficher les clés publiques")
-    print("5) Exécuter X3DH (calcul du Secret Maître)")
-    print("6) Initialiser le Double Ratchet")
-    print("7) Envoyer des messages sécurisés (Alice -> Bob)")
-    print("8) Simuler une compromission (attaque)")
-    print("9) Tenter le déchiffrement par l'attaquant")
-    print("10) Afficher la conclusion de sécurité")
+    print("4) Afficher l'état du serveur (clés stockées)")
+    print("5) Afficher les clés publiques")
+    print("6) Exécuter X3DH (calcul du Secret Maître)")
+    print("7) Initialiser le Double Ratchet")
+    print("8) Envoyer des messages sécurisés (Alice -> Bob)")
+    print("9) Simuler une compromission (attaque)")
+    print("10) Tenter le déchiffrement par l'attaquant")
+    print("11) Afficher la conclusion de sécurité")
     print()
-    print("11) Afficher l'état du serveur")
     print("12) Lancer la démonstration complète (auto)")
     print()
     print("0) Quitter")
@@ -230,7 +230,7 @@ def option_3_fetch_prekeys(demo: SignalDemo):
     wait_for_user()
 
 
-def option_4_display_public_keys(demo: SignalDemo):
+def option_5_display_public_keys(demo: SignalDemo):
     """Option 4: Afficher les clés publiques."""
     print_step_header(4, "Affichage des Clés Publiques")
 
@@ -275,7 +275,7 @@ def option_4_display_public_keys(demo: SignalDemo):
     wait_for_user()
 
 
-def option_5_execute_x3dh(demo: SignalDemo):
+def option_6_execute_x3dh(demo: SignalDemo):
     """Option 5: Exécuter X3DH."""
     print_step_header(5, "Exécution X3DH")
 
@@ -333,18 +333,19 @@ def option_5_execute_x3dh(demo: SignalDemo):
     # Consommer la clé pré-usage unique du serveur (étape de sécurité critique)
     demo.server.consume_one_time_prekey("bob")
 
-    print("Sécurité : La clé pré-usage unique a été consommée du serveur")
-    print("Cette pré-clé ne peut pas être réutilisée dans de futures conversations.")
+    print("[SERVEUR] Clé Pré-Usage Unique consommée et supprimée définitivement")
+    print("Cette pré-clé ne peut plus être réutilisée dans de futures conversations.")
+    print("Sécurité : Prévention des attaques par rejeu (replay attacks)")
     print()
     wait_for_user()
 
 
-def option_6_initialize_ratchet(demo: SignalDemo):
+def option_7_initialize_ratchet(demo: SignalDemo):
     """Option 4: Initialize Double Ratchet."""
     print_step_header(6, "Initialisation du Double Ratchet")
 
     if not demo.is_x3dh_done():
-        print("Erreur : Exécutez d'abord X3DH (option 5)")
+        print("Erreur : Exécutez d'abord X3DH (option 6)")
         return
 
     if demo.is_ratchet_initialized():
@@ -376,12 +377,12 @@ def option_6_initialize_ratchet(demo: SignalDemo):
     wait_for_user()
 
 
-def option_7_send_messages(demo: SignalDemo):
+def option_8_send_messages(demo: SignalDemo):
     """Option 7: Envoyer des messages sécurisés."""
     print_step_header(7, "Envoi de Messages Sécurisés")
 
     if not demo.is_ratchet_initialized():
-        print("Erreur : Initialisez d'abord le Double Ratchet (option 6)")
+        print("Erreur : Initialisez d'abord le Double Ratchet (option 7)")
         return
 
     if demo.has_messages():
@@ -428,12 +429,12 @@ def option_7_send_messages(demo: SignalDemo):
     wait_for_user()
 
 
-def option_8_simulate_attack(demo: SignalDemo):
+def option_9_simulate_attack(demo: SignalDemo):
     """Option 8: Simuler une compromission."""
     print_step_header(8, "Simulation d'Attaque")
 
     if not demo.has_messages():
-        print("Erreur : Envoyez d'abord les messages (option 7)")
+        print("Erreur : Envoyez d'abord les messages (option 8)")
         return
 
     if demo.has_attack_simulation():
@@ -468,12 +469,12 @@ def option_8_simulate_attack(demo: SignalDemo):
     wait_for_user()
 
 
-def option_9_attempt_decryption(demo: SignalDemo):
+def option_10_attempt_decryption(demo: SignalDemo):
     """Option 7: Attempt decryption by attacker."""
     print_step_header(9, "Tentatives de Déchiffrement")
 
     if not demo.has_attack_simulation():
-        print("Erreur : Simulez d'abord l'attaque (option 8)")
+        print("Erreur : Simulez d'abord l'attaque (option 9)")
         return
 
     print_explanation("""
@@ -497,12 +498,12 @@ def option_9_attempt_decryption(demo: SignalDemo):
     wait_for_user()
 
 
-def option_10_display_conclusion(demo: SignalDemo):
+def option_11_display_conclusion(demo: SignalDemo):
     """Option 10: Afficher la conclusion de sécurité."""
     print_separator("CONCLUSION DE SÉCURITÉ")
 
     if not demo.has_attack_simulation():
-        print("Erreur : Terminez d'abord la simulation d'attaque (option 9)")
+        print("Erreur : Terminez d'abord la simulation d'attaque (option 10)")
         return
 
     print_explanation("""
@@ -548,20 +549,22 @@ def option_12_auto_demo(demo: SignalDemo):
     option_1_initialize_parties(demo)
     option_2_register_bob(demo)
     option_3_fetch_prekeys(demo)
-    option_4_display_public_keys(demo)
-    option_5_execute_x3dh(demo)
-    option_6_initialize_ratchet(demo)
-    option_7_send_messages(demo)
-    option_8_simulate_attack(demo)
-    option_9_attempt_decryption(demo)
-    option_10_display_conclusion(demo)
+    option_4_show_server_state(demo)  # Montrer l'état AVANT X3DH
+    option_5_display_public_keys(demo)
+    option_6_execute_x3dh(demo)
+    option_4_show_server_state(demo)  # Montrer l'état APRÈS X3DH
+    option_7_initialize_ratchet(demo)
+    option_8_send_messages(demo)
+    option_9_simulate_attack(demo)
+    option_10_attempt_decryption(demo)
+    option_11_display_conclusion(demo)
 
     print_separator("FIN DE LA DÉMONSTRATION COMPLÈTE")
 
 
-def option_11_show_server_state(demo: SignalDemo):
-    """Option 11: Afficher l'état du serveur."""
-    print_step_header(11, "État du Serveur de Clés")
+def option_4_show_server_state(demo: SignalDemo):
+    """Option 4: Afficher l'état du serveur."""
+    print_step_header(4, "État du Serveur de Clés")
 
     print_explanation("""
     Affiche l'état actuel du serveur de clés Signal.
@@ -614,21 +617,21 @@ def main():
             elif choice == "3":
                 option_3_fetch_prekeys(demo)
             elif choice == "4":
-                option_4_display_public_keys(demo)
+                option_4_show_server_state(demo)
             elif choice == "5":
-                option_5_execute_x3dh(demo)
+                option_5_display_public_keys(demo)
             elif choice == "6":
-                option_6_initialize_ratchet(demo)
+                option_6_execute_x3dh(demo)
             elif choice == "7":
-                option_7_send_messages(demo)
+                option_7_initialize_ratchet(demo)
             elif choice == "8":
-                option_8_simulate_attack(demo)
+                option_8_send_messages(demo)
             elif choice == "9":
-                option_9_attempt_decryption(demo)
+                option_9_simulate_attack(demo)
             elif choice == "10":
-                option_10_display_conclusion(demo)
+                option_10_attempt_decryption(demo)
             elif choice == "11":
-                option_11_show_server_state(demo)
+                option_11_display_conclusion(demo)
             elif choice == "12":
                 option_12_auto_demo(demo)
             else:
