@@ -129,8 +129,7 @@ def option_1_initialize_parties(demo: SignalDemo):
     - Clé pré-signée (moyen terme)
     - Clé pré-usage unique (single-use)
 
-    Note : Dans le vrai protocole Signal, Bob enregistrerait ses clés publiques
-    sur le serveur avant qu'Alice puisse initier le contact.
+    
     """)
 
     # Initialiser Alice et Bob
