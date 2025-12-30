@@ -489,10 +489,10 @@ def option_9_attempt_decryption(demo: SignalDemo):
     demo.attacker.demonstrate_attack(demo.messages, demo.encrypted_messages, demo.message_keys)
 
     # Show summary
-    print("RESUME DE L'ATTAQUE :")
-    print("OK Message 1 (passe) : SECURISE (confidentialite persistante)")
-    print("FAIL Message 2 (compromis) : DECHIFFRE (cle compromisee)")
-    print("OK Message 3 (futur) : SECURISE (securite post-compromission)")
+    print("RÉSUMÉ DE L'ATTAQUE :")
+    print("OK Message 1 (passé) : SÉCURISÉ (confidentialité persistante)")
+    print("ÉCHEC Message 2 (compromis) : DÉCHIFFRÉ (clé compromise)")
+    print("OK Message 3 (futur) : SÉCURISÉ (sécurité post-compromission)")
     print()
     wait_for_user()
 

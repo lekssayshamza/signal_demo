@@ -47,9 +47,9 @@ class Attacker:
                 plaintext = decrypt_message(key, ciphertext)
                 return True, plaintext
             except ValueError:
-                return False, "Decryption failed - wrong key or corrupted message"
+                return False, "Échec du déchiffrement – clé incorrecte ou message corrompu"
         else:
-            return False, "No compromised key available for this message"
+            return False, "Aucune clé compromise disponible pour ce message"
 
     def demonstrate_attack(self, messages: list, ciphertexts: list, actual_keys: list = None):
         """
@@ -60,24 +60,24 @@ class Attacker:
             ciphertexts: List of corresponding encrypted messages
             actual_keys: List of actual message keys used for encryption (for verification)
         """
-        print("ATTACK DEMONSTRATION")
-        print("The attacker has compromised ONLY the Message Key for Message 2")
+        print("DÉMONSTRATION D’ATTAQUE")
+        print("L’attaquant a compromis UNIQUEMENT la clé de message pour le message 2")
         print()
 
         for i, (plaintext, ciphertext) in enumerate(zip(messages, ciphertexts), 1):
             success, result = self.try_decrypt_message(i, ciphertext)
 
-            print(f"Attempting to decrypt Message {i}...")
+            print(f"Tentative de déchiffrement du message {i}...")
 
             if success:
-                print(f"  SUCCESS: '{result}'")
-                print("  This message was compromised!")
+                print(f"  SUCCÈS: '{result}'")
+                print("  Ce message a été compromis!")
             else:
-                print(f"  FAIL: {result}")
+                print(f"  ÉCHEC: {result}")
                 if actual_keys and i <= len(actual_keys):
                     # Show that the key was actually different
                     actual_key = actual_keys[i-1]
-                    print(f"  (The actual key used was different: {actual_key.hex()[:16]}...)")
-                print("  This message remains secure!")
+                    print(f"  (La clé réellement utilisée était différente: {actual_key.hex()[:16]}...)")
+                print("  Ce message reste sécurisé!")
 
             print()
